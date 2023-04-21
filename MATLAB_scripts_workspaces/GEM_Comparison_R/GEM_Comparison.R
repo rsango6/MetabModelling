@@ -19,7 +19,6 @@ require(grid)
 
 file.choose()
 
-
 ControlRXN = read.csv('/Users/rokosango/PhD/MetabModelling/MATLAB_scripts_workspaces/Immunometabolism_models/tINIT_models/OnlyReactionsFromModels/ControlModel.csv',
                       header = T)
 # LPS

@@ -19,17 +19,17 @@ require(grid)
 
 file.choose()
 
-ControlRXN = read.csv('/Users/rokosango/PhD/Modelling/MATLAB_scripts_workspaces/Immunometabolism_models/tINIT_models/OnlyReactionsFromModels/ControlModel.csv',
+ControlRXN = read.csv('/Users/rokosango/PhD/MetabModelling/MATLAB_scripts_workspaces/Immunometabolism_models/tINIT_models/OnlyReactionsFromModels/ControlModel.csv',
                       header = T)
 # LPS
 
-LPSRXN = read.csv('/Users/rokosango/PhD/Modelling/MATLAB_scripts_workspaces/Immunometabolism_models/tINIT_models/OnlyReactionsFromModels/LPSModel.csv',
+LPSRXN = read.csv('/Users/rokosango/PhD/MetabModelling/MATLAB_scripts_workspaces/Immunometabolism_models/tINIT_models/OnlyReactionsFromModels/LPSModel.csv',
                   header = T)
 # IL4
 
-IL4RXN = read.csv('/Users/rokosango/PhD/Modelling/MATLAB_scripts_workspaces/Immunometabolism_models/tINIT_models/OnlyReactionsFromModels/IL4Model.csv',
+IL4RXN = read.csv('/Users/rokosango/PhD/MetabModelling/MATLAB_scripts_workspaces/Immunometabolism_models/tINIT_models/OnlyReactionsFromModels/IL4Model.csv',
                   header = T)
-reactions = read.csv('/Users/rokosango/PhD/Modelling/MATLAB_scripts_workspaces/reactions.csv')
+reactions = read.csv('/Users/rokosango/PhD/MetabModelling/MATLAB_scripts_workspaces/reactions.csv')
 
 
 # ResReactionsMatrix = read.csv('ResReactionsMatrix.csv')
@@ -103,7 +103,7 @@ reactions = read.csv('/Users/rokosango/PhD/Modelling/MATLAB_scripts_workspaces/r
 #        x = "", y = "", color = "Status")
 
 #### Getting proper media compositions for model constraining ####
-setwd("/Users/rokosango/PhD/Modelling/MATLAB_scripts_workspaces/GEM_Comparison_R")
+setwd("/Users/rokosango/PhD/MetabModelling/MATLAB_scripts_workspaces/GEM_Comparison_R")
 options(scipen=999)
 MediaCompDf = read.csv('MediaCompDf.csv', header = T, row.names = 1)
 
@@ -116,14 +116,14 @@ write.csv(MediaCompDf, 'MediaCompDf.csv')
 
 
 #Venn diagram of Constrained GEMs 
-setwd("~/PhD/Modelling/MATLAB_scripts_workspaces/Immunometabolism_models/tINIT_models")
+setwd("~/PhD/MetabModelling/MATLAB_scripts_workspaces/Immunometabolism_models/tINIT_models")
 
 
-LPS = read.csv('/Users/rokosango/PhD/Modelling/MATLAB_scripts_workspaces/Immunometabolism_models/tINIT_models/LPS_GEM_genes.csv',
+LPS = read.csv('/Users/rokosango/PhD/MetabModelling/MATLAB_scripts_workspaces/Immunometabolism_models/tINIT_models/LPS_GEM_genes.csv',
                header = T)
-IL4 = read.csv('/Users/rokosango/PhD/Modelling/MATLAB_scripts_workspaces/Immunometabolism_models/tINIT_models/IL4_GEM_genes.csv',
+IL4 = read.csv('/Users/rokosango/PhD/MetabModelling/MATLAB_scripts_workspaces/Immunometabolism_models/tINIT_models/IL4_GEM_genes.csv',
                header = T)
-Control = read.csv('/Users/rokosango/PhD/Modelling/MATLAB_scripts_workspaces/Immunometabolism_models/tINIT_models/Control_GEM_genes.csv',
+Control = read.csv('/Users/rokosango/PhD/MetabModelling/MATLAB_scripts_workspaces/Immunometabolism_models/tINIT_models/Control_GEM_genes.csv',
                    header = T)
 
 x <- list(
@@ -183,11 +183,11 @@ generate_RepMets = function(RepMets, title) {
 
 #file.choose()
 
-setwd('/Users/rokosango/PhD/Modelling/MATLAB_scripts_workspaces/Immunometabolism_models/tINIT_models/Plots/RepMets/')
+setwd('/Users/rokosango/PhD/MetabModelling/MATLAB_scripts_workspaces/Immunometabolism_models/tINIT_models/Plots/RepMets/')
 ### IL4 ###
 
 # general
-IL4 = read.csv("/Users/rokosango/PhD/Modelling/RS/RS_IL4_full/RepMetsIL4.csv",
+IL4 = read.csv("/Users/rokosango/PhD/MetabModelling/RS/RS_IL4_full/RepMetsIL4.csv",
                header = T)
 
 Compartment = str_sub(IL4$mets, -1, -1) # extract compartment letter
@@ -206,7 +206,7 @@ a = generate_RepMets(IL4, "Top 20 RepMets IL4")
 
 a
 # Up 
-IL4 = read.csv("/Users/rokosango/PhD/Modelling/RS/RS_IL4_full/RepMetsIL4Up.csv",
+IL4 = read.csv("/Users/rokosango/PhD/MetabModelling/RS/RS_IL4_full/RepMetsIL4Up.csv",
                header = T)
 
 b = generate_RepMets(IL4, "Top 20 RepMets IL4 Up")
@@ -214,7 +214,7 @@ b = generate_RepMets(IL4, "Top 20 RepMets IL4 Up")
 
 
 # Down
-IL4 = read.csv("/Users/rokosango/PhD/Modelling/RS/RS_IL4_full/RepMetsIL4Down.csv",
+IL4 = read.csv("/Users/rokosango/PhD/MetabModelling/RS/RS_IL4_full/RepMetsIL4Down.csv",
                header = T)
 c = generate_RepMets(IL4, "Top 20 RepMets IL4 Down") 
 
@@ -223,7 +223,7 @@ c
 ### LPS ###
 
 # general
-LPS = read.csv("/Users/rokosango/PhD/Modelling/RS/RS_LPS_full/RepMetsLPS.csv",
+LPS = read.csv("/Users/rokosango/PhD/MetabModelling/RS/RS_LPS_full/RepMetsLPS.csv",
                header = T)
 
 Compartment = str_sub(LPS$mets, -1, -1) # extract compartment letter 
@@ -244,14 +244,14 @@ d = generate_RepMets(LPS, "Top 20 RepMets LPS")
 
 
 # Up
-LPSUp = read.csv("/Users/rokosango/PhD/Modelling/RS/RS_LPS_full/RepMetsLPSUp.csv",
+LPSUp = read.csv("/Users/rokosango/PhD/MetabModelling/RS/RS_LPS_full/RepMetsLPSUp.csv",
                header = T)
 e = generate_RepMets(LPS, "Top 20 RepMets LPS Up")
 
 e
 
 # Down
-LPS = read.csv("/Users/rokosango/PhD/Modelling/RS/RS_LPS_full/RepMetsLPSDown.csv",
+LPS = read.csv("/Users/rokosango/PhD/MetabModelling/RS/RS_LPS_full/RepMetsLPSDown.csv",
                header = T)
 f = generate_RepMets(LPS, "Top 20 RepMets LPS Down")
 
@@ -272,15 +272,15 @@ options(scipen = 1)
 
 # Control
 
-ControlRXN = read.csv('/Users/rokosango/PhD/Modelling/MATLAB_scripts_workspaces/Immunometabolism_models/tINIT_models/OnlyReactionsFromModels/ControlModel.csv',
+ControlRXN = read.csv('/Users/rokosango/PhD/MetabModelling/MATLAB_scripts_workspaces/Immunometabolism_models/tINIT_models/OnlyReactionsFromModels/ControlModel.csv',
                    header = T)
 # LPS
 
-LPSRXN = read.csv('/Users/rokosango/PhD/Modelling/MATLAB_scripts_workspaces/Immunometabolism_models/tINIT_models/OnlyReactionsFromSimplifiedModels/Simplified_LPS_rxns_only.csv',
+LPSRXN = read.csv('/Users/rokosango/PhD/MetabModelling/MATLAB_scripts_workspaces/Immunometabolism_models/tINIT_models/OnlyReactionsFromSimplifiedModels/Simplified_LPS_rxns_only.csv',
                    header = T)
 # IL4
 
-IL4RXN = read.csv('/Users/rokosango/PhD/Modelling/MATLAB_scripts_workspaces/Immunometabolism_models/tINIT_models/OnlyReactionsFromSimplifiedModels/Simplified_IL4_rxns_only.csv',
+IL4RXN = read.csv('/Users/rokosango/PhD/MetabModelling/MATLAB_scripts_workspaces/Immunometabolism_models/tINIT_models/OnlyReactionsFromSimplifiedModels/Simplified_IL4_rxns_only.csv',
                header = T)
 
 
@@ -324,7 +324,7 @@ IL4RXN = read.csv('/Users/rokosango/PhD/Modelling/MATLAB_scripts_workspaces/Immu
 file.choose(
 )
 
-AltB = read.csv('/Users/rokosango/PhD/Modelling/MATLAB_scripts_workspaces/Immunometabolism_models/tINIT_models/AlternativeBounds.csv',
+AltB = read.csv('/Users/rokosango/PhD/MetabModelling/MATLAB_scripts_workspaces/Immunometabolism_models/tINIT_models/AlternativeBounds.csv',
                 header = T)
 
 
@@ -339,7 +339,7 @@ ggplot(data=AltB, aes(x=reorder(Bounds, -Obj_Value), y=Obj_Value, group=Model)) 
 
 #### FVA ####
 
-setwd('/Users/rokosango/PhD/Modelling/MATLAB_scripts_workspaces')
+setwd('/Users/rokosango/PhD/MetabModelling/MATLAB_scripts_workspaces')
 # IL4
 # IL4 = read.csv('/Users/rokosango/PhD/Modelling/MATLAB_scripts_workspaces/FVAIL4.csv')
 # IL4$Equation = IL4RXN$EQUATION[match(IL4$ReactionID, IL4RXN$ID)]
@@ -1230,7 +1230,7 @@ annotate_figure(g, left = text_grob("Fluxes", face = "bold", rot = 90))
 
 ## check if high regulated genes are in Control Model
 
-ControlGEMGenes = read.xlsx2('/Users/rokosango/PhD/Modelling/MATLAB_scripts_workspaces/Immunometabolism_models/tINIT_models/newFluxResults/ControlGeneDel.xlsx',
+ControlGEMGenes = read.xlsx2('/Users/rokosango/PhD/MetabModelling/MATLAB_scripts_workspaces/Immunometabolism_models/tINIT_models/newFluxResults/ControlGeneDel.xlsx',
                              sheetIndex = 1)
 ControlGEMGenes = ControlGEMGenes %>%
   filter(!GrowthRatio == 1) # growth ratio of 1 means no change, hence we look for those that change the ratio in
@@ -1293,7 +1293,7 @@ write.csv(mIL4, "RegGenesIL4.csv")
 
 file.choose()
 
-LPSFEA = read.csv('/Users/rokosango/PhD/Modelling/MATLAB_scripts_workspaces/Immunometabolism_models/tINIT_models/newFluxResults/FEA_LPS_Subsystems.csv')
+LPSFEA = read.csv('/Users/rokosango/PhD/MetabModelling/MATLAB_scripts_workspaces/Immunometabolism_models/tINIT_models/newFluxResults/FEA_LPS_Subsystems.csv')
 
 LPSFEA = LPSFEA %>% 
   filter(Adjusted.P.value < 0.05) %>%
@@ -1313,7 +1313,7 @@ ggplot(LPSFEA, aes(x = RxnRatio, y = reorder(Group, -Adjusted.P.value), size = E
 
 
   
-IL4FEA = read.csv('/Users/rokosango/PhD/Modelling/MATLAB_scripts_workspaces/Immunometabolism_models/tINIT_models/newFluxResults/FEA_IL4_Subsystems.csv')
+IL4FEA = read.csv('/Users/rokosango/PhD/MetabModelling/MATLAB_scripts_workspaces/Immunometabolism_models/tINIT_models/newFluxResults/FEA_IL4_Subsystems.csv')
 
 IL4FEA = IL4FEA %>% 
   filter(Adjusted.P.value < 0.05) %>%
@@ -1332,7 +1332,7 @@ ggplot(IL4FEA, aes(x = RxnRatio, y = reorder(Group, -Adjusted.P.value), size = E
 
 
 
-ControlFEA = read.csv('/Users/rokosango/PhD/Modelling/MATLAB_scripts_workspaces/Immunometabolism_models/tINIT_models/newFluxResults/FEA_Control_Subsystems.csv')
+ControlFEA = read.csv('/Users/rokosango/PhD/MetabModelling/MATLAB_scripts_workspaces/Immunometabolism_models/tINIT_models/newFluxResults/FEA_Control_Subsystems.csv')
 
 ControlFEA = ControlFEA %>% 
   filter(Adjusted.P.value < 0.05) %>%
@@ -1424,7 +1424,7 @@ options(scipen = 999)
 # probably because they are needed to support aggregation of biomass precursors (proteins, dna, lipids, etc.) much 
 # more than in [IL4, Control] scenarios
 
-path = '/Users/rokosango/PhD/Modelling/MATLAB_scripts_workspaces/Immunometabolism_models/tINIT_models/newFluxResults/'
+path = '/Users/rokosango/PhD/MetabModelling/MATLAB_scripts_workspaces/Immunometabolism_models/tINIT_models/newFluxResults/'
 
 LPSGapFilled = read.xlsx2(paste0(path, "LPSFluxTable.xlsx"),
                           sheetIndex = 1)
@@ -1927,7 +1927,7 @@ FluxDistr$Model = rep(c("LPS", "IL4", "Control"), times = c(7950, 7950, 7668))
 #### Curated FVA ####
 #load all 3 datasets containing fluxes for models (IL4RXN etc., plus "reactions" file)
 options(scipen = 999)
-path = '/Users/rokosango/PhD/Modelling/MATLAB_scripts_workspaces/Immunometabolism_models/tINIT_models/NewFVAResults/'
+path = '/Users/rokosango/PhD/MetabModelling/MATLAB_scripts_workspaces/Immunometabolism_models/tINIT_models/NewFVAResults/'
 
 fvaprep = function(df, rxnlist, AllKnownRxnsFile) {
   InterestingSubsystems = c("Glycolysis / Gluconeogenesis",
@@ -2153,11 +2153,11 @@ write.csv(GlycoNodes, "GlycoNodesNewInfo.csv")
 
 EssGenesPrep = function(GeneVector, GeneMatrix) {
   
-    Tasks = '/Users/rokosango/PhD/Modelling/Human-GEM/data/metabolicTasks/metabolicTasks_Essential.xlsx'
+    Tasks = '/Users/rokosango/PhD/MetabModelling/Human-GEM/data/metabolicTasks/metabolicTasks_Essential.xlsx'
     Tasks = read.xlsx2(Tasks, sheetIndex = 1)
     TasksFiltered = Tasks$DESCRIPTION[Tasks$DESCRIPTION != ""]
   
-    Path = '/Users/rokosango/PhD/Modelling/MATLAB_scripts_workspaces/Immunometabolism_models/tINIT_models/EssentialGenes/'
+    Path = '/Users/rokosango/PhD/MetabModelling/MATLAB_scripts_workspaces/Immunometabolism_models/tINIT_models/EssentialGenes/'
     GeneVector = read.csv(paste0(Path, GeneVector), col.names = "Gene")
     EssentialGenesDf = read.csv(paste0(Path, GeneMatrix))
     EssentialGenesDf$X0 = NULL
@@ -2195,7 +2195,7 @@ LPSBM = 0.001325928
 IL4BM = 0.001565171
 CtrlBM = 0.001063008
 
-Path = '/Users/rokosango/PhD/Modelling/MATLAB_scripts_workspaces/Immunometabolism_models/tINIT_models/EssentialGenes/'
+Path = '/Users/rokosango/PhD/MetabModelling/MATLAB_scripts_workspaces/Immunometabolism_models/tINIT_models/EssentialGenes/'
 
 LPSGapFilledEssGenes = read.csv(paste0(Path, 'LPSGapFilledEssGenes.csv'))
 
@@ -2221,7 +2221,7 @@ CtrlGapFilledEssGenes = CtrlGapFilledEssGenes %>%
 
 # new idea: get fba results from knockout models for LPS, IL4 and Control
 #### knock-out Fluxes ####
-setwd('/Users/rokosango/PhD/Modelling/MATLAB_scripts_workspaces/Immunometabolism_models/tINIT_models/newFluxResults')
+setwd('/Users/rokosango/PhD/MetabModelling/MATLAB_scripts_workspaces/Immunometabolism_models/tINIT_models/newFluxResults')
 #LPS knockout
 LPSGeneDelFluxSolution = read.xlsx('LPSGeneDelFluxSolution.xlsx',
                                    sheetIndex = 1)
@@ -2612,13 +2612,13 @@ TCAMet = SpecFluxesFun(LPSGapFilled, LPS_Knockout_List[["Cyp27a1"]],
 
 #### Random sampling by ACHR ####
 
-LPSSampledModelRxnID = read.table('~/PhD/Modelling/MATLAB_scripts_workspaces/SamplingResults/LPSModelSamplingRxns.txt', 
+LPSSampledModelRxnID = read.table('~/PhD/MetabModelling/MATLAB_scripts_workspaces/SamplingResults/LPSModelSamplingRxns.txt', 
                                   col.names = "Reaction")
 
-IL4SampledModelRxnID = read.table('~/PhD/Modelling/MATLAB_scripts_workspaces/SamplingResults/IL4ModelSamplingRxns.txt', 
+IL4SampledModelRxnID = read.table('~/PhD/MetabModelling/MATLAB_scripts_workspaces/SamplingResults/IL4ModelSamplingRxns.txt', 
                                   col.names = "Reaction")
 
-KO_LPSSampledModelRxnID = read.table('~/PhD/Modelling/MATLAB_scripts_workspaces/SamplingResults/KO_LPSModelSamplingRxns.txt',
+KO_LPSSampledModelRxnID = read.table('~/PhD/MetabModelling/MATLAB_scripts_workspaces/SamplingResults/KO_LPSModelSamplingRxns.txt',
                                   col.names = "Reaction")
 
 #CommonRxns = intersect(IL4SampledModelRxnID$Reaction,
@@ -2638,7 +2638,7 @@ filter = function(df) {
 
 #LPS
 
-path = '~/PhD/Modelling/MATLAB_scripts_workspaces/SamplingResults/LPS/'
+path = '~/PhD/MetabModelling/MATLAB_scripts_workspaces/SamplingResults/LPS/'
 
 
 # load up the data: reaction IDs & flux matrices
@@ -2682,7 +2682,7 @@ LPSSamplingMeanDf = Reduce(`+`, LPS_list)/length(LPS_list)
 #IL4
 
 
-path = '~/PhD/Modelling/MATLAB_scripts_workspaces/SamplingResults/IL4/'
+path = '~/PhD/MetabModelling/MATLAB_scripts_workspaces/SamplingResults/IL4/'
 
 IL4data_files <- list.files(paste0(path))  # Identify file names
 IL4data_files
@@ -2716,7 +2716,7 @@ IL4SamplingMeanDf = Reduce(`+`, IL4_list)/length(IL4_list)
 
 # LPS Knockout
 
-path = '~/PhD/Modelling/MATLAB_scripts_workspaces/SamplingResults/KO_LPS/'
+path = '~/PhD/MetabModelling/MATLAB_scripts_workspaces/SamplingResults/KO_LPS/'
 
 KO_LPSdata_files <- list.files(paste0(path))  # Identify file names
 KO_LPSdata_files

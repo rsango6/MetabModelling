@@ -2881,8 +2881,8 @@ arrangedplots = function(sampling_mean_df1,
   
           plotlist = list()
   
-          unique_rxns = unique(subsystem_list[[2]]$ReactionID)
-          
+          #unique_rxns = unique(subsystem_list[[2]]$ReactionID)
+          unique_rxns = unique(sort(subsystem_list[[2]]$ReactionID))
           
     for (i in 1:length(unique_rxns)){
     
@@ -2917,7 +2917,7 @@ arrangedplots(LPSSamplingMeanDf,KO_LPSSamplingMeanDf,"TCA Cycle",
               LPS_Knockout_List[["Cyp27a1"]], 4)
 
 arrangedplots(LPSSamplingMeanDf,KO_LPSSamplingMeanDf,"Pyrimidine Metabolism",
-              PyrMet, "LPS", "Cyp27a1_KO", LPSGapFilled,
+              PyrMet, "WT", "Cyp27a1_KO", LPSGapFilled,
               LPS_Knockout_List[["Cyp27a1"]], 7)
 
 arrangedplots(LPSSamplingMeanDf,KO_LPSSamplingMeanDf, "Heme synthesis",

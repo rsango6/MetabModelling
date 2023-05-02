@@ -2547,7 +2547,7 @@ SpecFluxesFun = function(df, df2, WhichSubsystem, title) {
       #uncomment above line for displaying plots in alphanumerical order.
       #however, uncommenting it  makes the density plot `arrangedplots` perform weirdly!
       
-      fba = ggplot(combined, aes(x = ReactionID, y = Flux,
+      fba = ggplot(combined, aes(x = ReactionName, y = Flux,
                            fill=Model)) +
         geom_bar(stat = "identity", color = "black", 
                  position = position_dodge()) +
@@ -2563,7 +2563,7 @@ SpecFluxesFun = function(df, df2, WhichSubsystem, title) {
               legend.text = element_text(face = "bold", size = 10),
               plot.title = element_text(face = "bold"))
       
-      fva = ggplot(combined, aes(x = ReactionID, y = FVAHalfPoint, 
+      fva = ggplot(combined, aes(x = ReactionName, y = FVAHalfPoint, 
                                  color=Model, group=Model)) +
         geom_errorbar(aes(ymin=FVAMin, ymax=FVAMax), width=1,
                       position=position_dodge(0.5)) +
@@ -3015,6 +3015,28 @@ names(SamplingDfCombined) = c(
 
 
 rownames(SamplingDfCombined) = rownames(LPSSamplingMeanDf)
+
+#### ESCHER ####
+# try vizualizing
+
+EscherWT = LPSGapFilled %>%
+  dplyr::filter(Subsystem %in% c('Glycolysis / Gluconeogenesis',
+                          "Tricarboxylic acid cycle and glyoxylate/dicarboxylate metabolism",
+                          'Pentose phosphate pathway')) %>%
+  dplyr::select(c(ReactionName, Flux))
+
+EscherKO = LPS_Knockout_List[["Cyp27a1"]] %>%
+  dplyr::filter(Subsystem %in% c('Glycolysis / Gluconeogenesis',
+                                 "Tricarboxylic acid cycle and glyoxylate/dicarboxylate metabolism",
+                                 'Pentose phosphate pathway')) %>%
+  dplyr::select(c(ReactionName, Flux))
+
+
+write.csv(EscherWT, 'EscherWT.csv')
+write.csv(EscherKO, 'EscherKO.csv')
+
+
+
 
 
 

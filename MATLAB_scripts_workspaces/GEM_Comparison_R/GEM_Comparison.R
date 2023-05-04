@@ -2382,6 +2382,23 @@ for (i in names(models)) {
     
   meltedDf$Subsystem = as.factor(meltedDf$Subsystem)
   
+  meltedDf = meltedDf %>%
+    dplyr::filter(!Subsystem %in% c('Cysteine and methionine metabolism',
+                             'Cholesterol metabolism',
+                             'Carnitine shuttle (mitochondrial)',
+                             'Carnitine shuttle (endoplasmic reticular)',
+                             'Carnitine shuttle (cytosolic)',
+                             'Butanoate metabolism',
+                             'Biopterin metabolism',
+                             'Bile acid recycling'))
+  
+  #meltedDf = meltedDf[!grepl("Vitamin", meltedDf$Subsystem),] #for Poster plot
+  
+  
+  # dplyr::filter(LPSFluxTable,
+  #        grepl('Vitamin', Subsystem),
+  #        Flux == 0)
+  
   ggplot(meltedDf, aes(x=Subsystem, y=value, fill=variable))+
     geom_bar(position='stack', stat="identity", color="black") +
     coord_flip() +

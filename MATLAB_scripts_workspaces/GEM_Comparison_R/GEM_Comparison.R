@@ -2392,7 +2392,8 @@ for (i in names(models)) {
                              'Biopterin metabolism',
                              'Bile acid recycling'))
   
-  #meltedDf = meltedDf[!grepl("Vitamin", meltedDf$Subsystem),] #for Poster plot
+  meltedDf = meltedDf[!grepl("Vitamin", meltedDf$Subsystem),] #for Poster plot
+  meltedDf = meltedDf[!grepl("Fatty", meltedDf$Subsystem),] #for Poster plot
   
   
   # dplyr::filter(LPSFluxTable,
@@ -2418,8 +2419,9 @@ for (i in names(models)) {
           axis.title = element_text(face = "bold", size = 10),
           legend.title = element_text(face = "bold", size = 10),
           legend.text = element_text(face = "bold", size = 10),
+          legend.position = "top",
           title = element_text(face = "bold")) +
-    labs(y = "Relative Contribution", x = NULL, title = title) +
+    labs(y = "Relative Contribution", x = NULL) +
     guides(fill=guide_legend(title="Models:"))
   
 }
@@ -2493,7 +2495,9 @@ ProcessPlotFun = function(df1, df2, InterestingSubs, gene) {
     theme(axis.text = element_text(face = "bold", size = 11),
           axis.title = element_text(face = "bold", size = 10),
           legend.title = element_text(face = "bold", size = 10),
-          legend.text = element_text(face = "bold", size = 10))
+          legend.text = element_text(face = "bold", size = 10),
+          legend.position = c(0.15, 0.9),
+          legend.background = element_rect(fill = "white", color = "black"))
     
   
 }

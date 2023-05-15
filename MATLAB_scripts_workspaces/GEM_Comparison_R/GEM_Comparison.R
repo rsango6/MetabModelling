@@ -2394,11 +2394,16 @@ for (i in names(models)) {
   
   meltedDf = meltedDf[!grepl("Vitamin", meltedDf$Subsystem),] #for Poster plot
   meltedDf = meltedDf[!grepl("Fatty", meltedDf$Subsystem),] #for Poster plot
+  meltedDf = meltedDf[!grepl("Glycos", meltedDf$Subsystem),] #for Poster plot
   
+  
+  meltedDf$Subsystem = str_replace_all(meltedDf$Subsystem, 
+                 "Tricarboxylic acid cycle and glyoxylate/dicarboxylate metabolism",
+                              "TCA cycle")
   
   # dplyr::filter(LPSFluxTable,
   #        grepl('Vitamin', Subsystem),
-  #        Flux == 0)
+  #        Flux == 0) #another way to subset tthe dataframe
   
   ggplot(meltedDf, aes(x=Subsystem, y=value, fill=variable))+
     geom_bar(position='stack', stat="identity", color="black") +
@@ -2474,6 +2479,11 @@ ProcessPlotFun = function(df1, df2, InterestingSubs, gene) {
               SDMean = sd(Flux, na.rm = T))
   
   combined = rbind(df1, df2)
+  
+  combined$Subsystem = str_replace_all(combined$Subsystem, 
+                                       "Tricarboxylic acid cycle and glyoxylate/dicarboxylate metabolism",
+                                       "TCA cycle")
+  
   combined$Model = rep(c("WT", "Cyp27a1"), each = 4)
   combined$Model = as.factor(combined$Model)
   combined$Subsystem = str_wrap(combined$Subsystem, width = 10)
@@ -2492,8 +2502,8 @@ ProcessPlotFun = function(df1, df2, InterestingSubs, gene) {
     #coord_flip() +
     labs(x = NULL, y = "Flux") +
     theme_bw() +
-    theme(axis.text = element_text(face = "bold", size = 11),
-          axis.title = element_text(face = "bold", size = 10),
+    theme(axis.text = element_text(face = "bold", size = 15),
+          axis.title = element_text(face = "bold", size = 15),
           legend.title = element_text(face = "bold", size = 10),
           legend.text = element_text(face = "bold", size = 10),
           legend.position = c(0.15, 0.9),
@@ -2859,16 +2869,16 @@ densityplotsfun = function(sampling_mean_df1,
     scale_fill_manual(values=c("WT" = "#1B9E77", # explicitly map color to the factor
                                "Cyp27a1_KO" = "#D95F02")) +
     theme_bw() +
-    theme(axis.text = element_text(face = "bold", size = 8),
-          axis.title = element_text(face = "bold", size = 8),
+    theme(axis.text = element_text(face = "bold", size = 12),
+          axis.title = element_text(face = "bold", size = 12),
           legend.title = element_text(face = "bold", size = 10),
           legend.text = element_text(face = "bold", size = 10)) +
-    labs(x = NULL, y = NULL,  title = title)
+    labs(x = NULL, y = NULL, title = title)
   
 }
 
 densityplotsfun(LPSSamplingMeanDf, KO_LPSSamplingMeanDf,
-                "MAR04145", "WT", "Cyp27a1_KO", LPSGapFilled,
+                "MAR05297", "WT", "Cyp27a1_KO", LPSGapFilled,
                 LPS_Knockout_List[["Cyp27a1"]], "MAR04141")
 
 #use this densityplotsfun to get sampling results from rxns that are changing

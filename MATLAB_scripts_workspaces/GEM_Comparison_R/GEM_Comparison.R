@@ -2221,7 +2221,8 @@ CtrlGapFilledEssGenes = CtrlGapFilledEssGenes %>%
 
 # new idea: get fba results from knockout models for LPS, IL4 and Control
 #### knock-out Fluxes ####
-setwd('/Users/rokosango/PhD/MetabModelling/MATLAB_scripts_workspaces/Immunometabolism_models/tINIT_models/newFluxResults')
+setwd('/Users/rokosango/PhD/MetabModelling/MATLAB_scripts_workspaces/Immunometabolism_models/tINIT_models/GeneKnockoutFluxResults/')
+
 #LPS knockout
 LPSGeneDelFluxSolution = read.xlsx('LPSGeneDelFluxSolution.xlsx',
                                    sheetIndex = 1)
@@ -2255,9 +2256,11 @@ GeneDelFlux = function(df, gene) {
 }
 
 #make a list for each model and store each respect Knockout and Flux Distribution
+
+#-----------#
 LPS_Knockout_List <- list()
 
-for (i in names(LPSGeneDelFluxSolution)[2:8]) {
+for (i in names(LPSGeneDelFluxSolution)[2:length(names(LPSGeneDelFluxSolution))]) {
   
   name =  paste("LPS_KO", i, sep = "_")
   assign(name, 
@@ -2266,9 +2269,13 @@ for (i in names(LPSGeneDelFluxSolution)[2:8]) {
   LPS_Knockout_List[[i]] = GeneDelFlux(LPSGeneDelFluxSolution, i)
 }
 
+LPS_Knockout_List[["WT"]] = LPSGapFilled
+
+#-----------#
+
 IL4_Knockout_List <- list()
 
-for (i in names(IL4GeneDelFluxSolution)[2:8]) {
+for (i in names(IL4GeneDelFluxSolution)[2:length(names(IL4GeneDelFluxSolution))]) {
   
   name =  paste("IL4_KO", i, sep = "_")
   assign(name, 
@@ -2277,9 +2284,13 @@ for (i in names(IL4GeneDelFluxSolution)[2:8]) {
   IL4_Knockout_List[[i]] = GeneDelFlux(IL4GeneDelFluxSolution, i)
 }
 
+IL4_Knockout_List[["WT"]] = IL4GapFilled
+
+#----------#
+
 Ctrl_Knockout_List <- list()
 
-for (i in names(CtrlGeneDelFluxSolution)[2:8]) {
+for (i in names(CtrlGeneDelFluxSolution)[2:length(names(CtrlGeneDelFluxSolution))]) {
   
   name =  paste("Ctrl_KO", i, sep = "_")
   assign(name, 
@@ -2288,9 +2299,11 @@ for (i in names(CtrlGeneDelFluxSolution)[2:8]) {
   Ctrl_Knockout_List[[i]] = GeneDelFlux(CtrlGeneDelFluxSolution, i)
 }
 
+Ctrl_Knockout_List[["WT"]] = CtrlGapFilled
+
 for (i in names(LPS_Knockout_List)) {
-  FunRelativeContrib(LPS_Knockout_List[[i]], IL4_Knockout_List[[i]], 
-                     Ctrl_Knockout_List[[i]], paste0(i, "knockout"))
+  print(FunRelativeContrib(LPS_Knockout_List[[i]], IL4_Knockout_List[[i]], 
+                     Ctrl_Knockout_List[[i]], paste(i, "knockout", sep = "_")))
   
 }
 
@@ -2316,53 +2329,53 @@ FunRelativeContrib(LPS_Knockout_List[["Sphk2"]], IL4_Knockout_List[["Sphk2"]],
                    Ctrl_Knockout_List[["Sphk2"]], "Sphk2 knockout")
 
 
-#check contributions within each model, i.e. LPS WT against all 8 knockouts
+#check contributions within each model, i.e. LPS WT against all  knockouts
 
-
-FunRelativeContribWithAllKnockouts = function(Model1, Model2, Model3, Model4,
-                                              Model5, Model6, Model7, Model8,
-                                                                      title) {
+FunRelativeContribWithAllKnockouts = function(ListModelKnockouts, title) {
   
-  models = list(Model1, Model2, Model3, Model4, Model5, Model6, Model7, Model8)                                            
-  names(models) = c("WT", "Cyp27a1", "Phgdh", "Arg1", "Alox15", "Setdb2", "Sphk1", "Sphk2")
+  CommonSubsystems = Reduce(intersect, list(ListModelKnockouts[["WT"]]$Subsystem,
+                                            ListModelKnockouts[["Cyp27a1"]]$Subsystem,
+                                            ListModelKnockouts[["Phgdh"]]$Subsystem,
+                                            ListModelKnockouts[["Arg1"]]$Subsystem,
+                                            ListModelKnockouts[["Alox15"]]$Subsystem,
+                                            ListModelKnockouts[["Setdb2"]]$Subsystem,
+                                            ListModelKnockouts[["Sphk1"]]$Subsystem,
+                                            ListModelKnockouts[["Sphk2"]]$Subsystem,
+                                            ListModelKnockouts[["Acly"]]$Subsystem,
+                                            ListModelKnockouts[["Gapdh"]]$Subsystem))
   
-  CommonSubsystems = Reduce(intersect, list(models[["WT"]]$Subsystem,
-                                            models[["Cyp27a1"]]$Subsystem,
-                                            models[["Phgdh"]]$Subsystem,
-                                            models[["Arg1"]]$Subsystem,
-                                            models[["Alox15"]]$Subsystem,
-                                            models[["Setdb2"]]$Subsystem,
-                                            models[["Sphk1"]]$Subsystem,
-                                            models[["Sphk2"]]$Subsystem))
   
-
-for (i in names(models)) {
-        
-    models[[i]] = models[[i]] %>%
-          dplyr::group_by(Subsystem) %>%
-          dplyr::summarize(AbsSum = sum(abs(Flux), na.rm = T))
-        
-        models[[i]] = models[[i]] %>%
-        dplyr::filter(!Subsystem == "NA") %>%
-        dplyr::filter(Subsystem %in% CommonSubsystems)
-}
-
+  for (i in names(ListModelKnockouts)) {
+    
+    ListModelKnockouts[[i]] = ListModelKnockouts[[i]] %>%
+      dplyr::group_by(Subsystem) %>%
+      dplyr::summarize(AbsSum = sum(abs(Flux), na.rm = T))
+    
+    ListModelKnockouts[[i]] = ListModelKnockouts[[i]] %>%
+      dplyr::filter(!Subsystem == "NA") %>% 
+      dplyr::filter(Subsystem %in% CommonSubsystems)
+  }
+  
   options(scipen = 999)
   
-  TotalFlux = data.frame(Subsystem = models[["WT"]]$Subsystem,
-                         WT = models[["WT"]][["AbsSum"]],
-                         Cyp27a1 = models[["Cyp27a1"]][["AbsSum"]],
-                         Phgdh = models[["Phgdh"]][["AbsSum"]],
-                         Arg1 = models[["Arg1"]][["AbsSum"]],
-                         Alox15 = models[["Alox15"]][["AbsSum"]],
-                         Setdb2 =models[["Setdb2"]][["AbsSum"]],
-                         Sphk1 = models[["Sphk1"]][["AbsSum"]],
-                         Sphk2 = models[["Sphk2"]][["AbsSum"]])
+  TotalFlux = data.frame(Subsystem = ListModelKnockouts[["WT"]]$Subsystem,
+                         WT = ListModelKnockouts[["WT"]][["AbsSum"]],
+                         Cyp27a1 = ListModelKnockouts[["Cyp27a1"]][["AbsSum"]],
+                         Phgdh = ListModelKnockouts[["Phgdh"]][["AbsSum"]],
+                         Arg1 = ListModelKnockouts[["Arg1"]][["AbsSum"]],
+                         Alox15 = ListModelKnockouts[["Alox15"]][["AbsSum"]],
+                         Setdb2 = ListModelKnockouts[["Setdb2"]][["AbsSum"]],
+                         Sphk1 = ListModelKnockouts[["Sphk1"]][["AbsSum"]],
+                         Sphk2 = ListModelKnockouts[["Sphk2"]][["AbsSum"]],
+                         Acly = ListModelKnockouts[["Acly"]][["AbsSum"]],
+                         Gapdh = ListModelKnockouts[["Gapdh"]][["AbsSum"]])
   
-
-  TotalFlux$SumAllModels = rowSums(TotalFlux[2:9])
   
-  TotalFlux = TotalFlux[!rowSums(TotalFlux[c(2:8)]) <= 1e-2,] #if the sum across different GEMs is < 1e-2
+  TotalFlux$SumAllModels = rowSums(TotalFlux[2:ncol(TotalFlux)])
+  TotalFlux$SD = apply(TotalFlux[3:ncol(TotalFlux)-1], 1, sd)
+  TotalFlux = TotalFlux %>% arrange(desc(SD))
+  
+  TotalFlux = TotalFlux[!rowSums(TotalFlux[c(2:ncol(TotalFlux))]) <= 1e-2,] #if the sum across different GEMs is < 1e-2
   TotalFluxRelContribution = TotalFlux %>%
     mutate(WT_RelContribution = (WT * 1) / SumAllModels) %>%
     mutate(Cyp27a1_RelContribution = (Cyp27a1 * 1) / SumAllModels) %>%
@@ -2372,40 +2385,43 @@ for (i in names(models)) {
     mutate(Setdb2_RelContribution = (Setdb2 * 1) / SumAllModels) %>%
     mutate(Sphk1_RelContribution = (Sphk1 * 1) / SumAllModels) %>%
     mutate(Sphk2_RelContribution = (Sphk2 * 1) / SumAllModels) %>%
-    dplyr::select(Subsystem, WT_RelContribution, Cyp27a1_RelContribution, Phgdh_RelContribution,
-           Arg1_RelContribution, Alox15_RelContribution, Setdb2_RelContribution,
-           Sphk1_RelContribution, Sphk2_RelContribution)
+    mutate(Acly_RelContribution = (Acly * 1) / SumAllModels) %>%
+    mutate(Gapdh_RelContribution = (Gapdh * 1) / SumAllModels) %>%
+    dplyr::select(Subsystem, WT_RelContribution, Cyp27a1_RelContribution, 
+                  Phgdh_RelContribution, Arg1_RelContribution, Alox15_RelContribution,
+                  Setdb2_RelContribution, Sphk1_RelContribution, 
+                  Sphk2_RelContribution, Acly_RelContribution, Gapdh_RelContribution)
   
   TotalFluxRelContribution = na.omit(TotalFluxRelContribution)
   
   meltedDf = melt(TotalFluxRelContribution)
-    
+  
   meltedDf$Subsystem = as.factor(meltedDf$Subsystem)
   
   meltedDf = meltedDf %>%
     dplyr::filter(!Subsystem %in% c('Cysteine and methionine metabolism',
-                             'Cholesterol metabolism',
-                             'Carnitine shuttle (mitochondrial)',
-                             'Carnitine shuttle (endoplasmic reticular)',
-                             'Carnitine shuttle (cytosolic)',
-                             'Butanoate metabolism',
-                             'Biopterin metabolism',
-                             'Bile acid recycling'))
+                                    'Cholesterol metabolism',
+                                    'Carnitine shuttle (mitochondrial)',
+                                    'Carnitine shuttle (endoplasmic reticular)',
+                                    'Carnitine shuttle (cytosolic)',
+                                    'Butanoate metabolism',
+                                    'Biopterin metabolism',
+                                    'Bile acid recycling'))
   
   meltedDf = meltedDf[!grepl("Vitamin", meltedDf$Subsystem),] #for Poster plot
-  meltedDf = meltedDf[!grepl("Fatty", meltedDf$Subsystem),] #for Poster plot
+  #meltedDf = meltedDf[!grepl("Fatty", meltedDf$Subsystem),] #for Poster plot
   meltedDf = meltedDf[!grepl("Glycos", meltedDf$Subsystem),] #for Poster plot
   
   
   meltedDf$Subsystem = str_replace_all(meltedDf$Subsystem, 
-                 "Tricarboxylic acid cycle and glyoxylate/dicarboxylate metabolism",
-                              "TCA cycle")
+                                       "Tricarboxylic acid cycle and glyoxylate/dicarboxylate metabolism",
+                                       "TCA cycle")
   
   # dplyr::filter(LPSFluxTable,
   #        grepl('Vitamin', Subsystem),
-  #        Flux == 0) #another way to subset tthe dataframe
+  #        Flux == 0) #another way to subset the dataframe
   
-  ggplot(meltedDf, aes(x=Subsystem, y=value, fill=variable))+
+  g = ggplot(meltedDf, aes(x=Subsystem, y=value, fill=variable))+
     geom_bar(position='stack', stat="identity", color="black") +
     coord_flip() +
     #scale_y_continuous(breaks=c(0, 0.25, 0.5, 0.75, 1.1)) +
@@ -2416,9 +2432,12 @@ for (i in names(models)) {
                                "Alox15_RelContribution" = "#66A61E",
                                "Setdb2_RelContribution" = "#E6AB02",
                                "Sphk1_RelContribution" = "#A6761D",
-                               "Sphk2_RelContribution" = "#666666"),
-                labels = c('WT', 'Cyp27a1_KO', 'Phgdh_KO', 'Arg1_KO',
-                'Alox15_KO', 'Setdb2_KO', 'Sphk1_KO', 'Sphk2_KO')) + # explicitly change legend text
+                               "Sphk2_RelContribution" = "#666666",
+                               "Acly_RelContribution" = "#BBA90B",
+                               "Gapdh_RelContribution" = "#A16864"),
+                      labels = c('WT', 'Cyp27a1_KO', 'Phgdh_KO', 'Arg1_KO',
+                                 'Alox15_KO', 'Setdb2_KO', 'Sphk1_KO', 'Sphk2_KO',
+                                 'Acly_KO', 'Gapdh_KO')) + # explicitly change legend text
     theme_minimal() +
     theme(axis.text = element_text(face = "bold", size = 11),
           axis.title = element_text(face = "bold", size = 10),
@@ -2426,30 +2445,21 @@ for (i in names(models)) {
           legend.text = element_text(face = "bold", size = 10),
           legend.position = "top",
           title = element_text(face = "bold")) +
-    labs(y = "Relative Contribution", x = NULL) +
+    labs(y = "Relative Contribution", x = NULL, title = title) +
     guides(fill=guide_legend(title="Models:"))
+  
+  res = list(TotalFlux, g)
+  names(res) = c("TableSummedFluxes", "RelContribPlot")
+  
+  return(res)
   
 }
 
+LPS_KO_Results = FunRelativeContribWithAllKnockouts(LPS_Knockout_List, 'LPS')
 
+IL4_KO_Results = FunRelativeContribWithAllKnockouts(IL4_Knockout_List, 'IL4')
 
-FunRelativeContribWithAllKnockouts(LPSGapFilled, LPS_Knockout_List[["Cyp27a1"]],
-                                   LPS_Knockout_List[["Phgdh"]], LPS_Knockout_List[["Arg1"]],
-                                   LPS_Knockout_List[["Alox15"]], LPS_Knockout_List[["Setdb2"]],
-                                   LPS_Knockout_List[["Sphk1"]], LPS_Knockout_List[["Sphk2"]],
-                                   "LPS Flux Predictions")
-
-FunRelativeContribWithAllKnockouts(IL4GapFilled, IL4_Knockout_List[["Cyp27a1"]],
-                                   IL4_Knockout_List[["Phgdh"]], IL4_Knockout_List[["Arg1"]],
-                                   IL4_Knockout_List[["Alox15"]], IL4_Knockout_List[["Setdb2"]],
-                                   IL4_Knockout_List[["Sphk1"]], IL4_Knockout_List[["Sphk2"]],
-                                   "IL4 Flux Predictions")
-
-FunRelativeContribWithAllKnockouts(CtrlGapFilled, Ctrl_Knockout_List[["Cyp27a1"]],
-                                   Ctrl_Knockout_List[["Phgdh"]], Ctrl_Knockout_List[["Arg1"]],
-                                   Ctrl_Knockout_List[["Alox15"]], Ctrl_Knockout_List[["Setdb2"]],
-                                   Ctrl_Knockout_List[["Sphk1"]], Ctrl_Knockout_List[["Sphk2"]],
-                                   "Control Flux Predictions")
+Ctrl_KO_Results = FunRelativeContribWithAllKnockouts(Ctrl_Knockout_List, 'Control')
 
 
 
